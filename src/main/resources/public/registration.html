@@ -4,7 +4,105 @@
     <meta charset="UTF-8">
     <title>DigitalReactor</title>
 </head>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
+      type="text/css"/>
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="css/v2.css" rel="stylesheet" type="text/css"/>
+<link href="css/page/registration.css" rel="stylesheet" type="text/css"/>
 <body>
+<div class="container">
+    <div class="row text-center logo-text">
+        <h1>Digital Reactor</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mt-element-step">
+                <div class="row step-line">
+                    <div class="col-md-4 mt-step-col first done">
+                        <div class="mt-step-number bg-dark font-grey">1</div>
+                        <div class="mt-step-title font-grey-cascade">Регистрация</div>
+                    </div>
+                    <div class="col-md-4 mt-step-col error">
+                        <div class="mt-step-number bg-dark font-grey">2</div>
+                        <div class="mt-step-title  font-grey-cascade">Доступ к Я.Метрике</div>
+                    </div>
+                    <div class="col-md-4 mt-step-col last">
+                        <div class="mt-step-number bg-dark font-grey">3</div>
+                        <div class="mt-step-title font-grey-cascade">Создание проекта</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 mt-wizard-padding">
+            <div>
+                <h2>Регистрация в сервисе</h2>
+            </div>
+            <div>
+                <p>Введите свой почтовый адрес, который будет использоватся в качастве вашего логина для получения
+                    статистики.</p>
+            </div>
+            <div class="form-group">
+                <label for="default" class="control-label">Email:</label>
+                <input id="default" type="text" class="form-control" placeholder="Ваша почта">
+            </div>
+            <div>
+                <button type="button" class="btn green-meadow">Далее</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 mt-wizard-padding">
+            <div>
+                <h2>Доступ к Я.Метрике</h2>
+            </div>
+            <div>
+                <p>Для подготовке аудита нам нужно получить доступ к вашему счетчику. Данные не будут переданы третьим
+                    лицам.</p>
+            </div>
+            <div>
+                <button type="button" class="btn green-meadow">Предоставить доступ</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 mt-wizard-padding">
+            <div>
+                <h2>Создание проекта</h2>
+            </div>
+            <div>
+                <p>Выберите счетчик, который требуется проанализировать.</p>
+            </div>
+            <div class="form-group">
+                <label for="default" class="control-label">Счётчик:</label>
+                <select class="bs-select form-control">
+                    <option>cvetomaster.ru</option>
+                    <option>cvetomaster.ru</option>
+                    <option>cvetomaster.ru</option>
+                </select>
+            </div>
+            <div>
+                <button type="button" class="btn green-meadow">Получить отчёт</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+
 
 </body>
 <script data-main="js/registration" src="js/libs/require.js"></script>

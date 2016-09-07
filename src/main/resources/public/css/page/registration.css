@@ -1,0 +1,15 @@
+body {
+!important;
+    background: #2f353b
+}
+
+.mt-wizard-padding {
+    background: #fff;
+    padding-bottom: 15px;
+}
+
+.logo-text h1 {
+    color: #fff;
+    font-weight: 900;
+    font-size: 60px;
+}
