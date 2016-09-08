@@ -23,7 +23,29 @@ require.config({
 });
 
 require([
-    'backbone'
-], function (Backbone) {
+    'backbone',
+    'views/registration/registration.component'
+], function (Backbone, RegistrationComponent) {
+    //localStorage.setItem('myCat', 'Tom');
+    var registrationComponent = new RegistrationComponent();
 
+    var Router = Backbone.Router.extend({
+        routes: {
+            '': 'index',
+            'access': 'access',
+            'sites': 'sites'
+        },
+        index: function () {
+            $("#registration-app").html(registrationComponent.render().el);
+        },
+        access: function () {
+
+        },
+        sites: function () {
+
+        }
+    });
+
+    new Router();
+    Backbone.history.start();
 });
