@@ -3,15 +3,15 @@
  */
 define([
         "backbone",
-        "text!templates/registration/info-message.html"
+        "text!templates/registration/success-message.html"
     ],
-    function (Backbone, InfoMessageTemplate) {
+    function (Backbone, SuccessTemplate) {
         var AccessView = Backbone.View.extend({
             events: {
                 'click #go-to-site-step': "goToSitesStep"
             },
             render: function () {
-                this.$el.html(_.template(InfoMessageTemplate)({}));
+                this.$el.html(_.template(SuccessTemplate)({}));
 
                 return this;
             },

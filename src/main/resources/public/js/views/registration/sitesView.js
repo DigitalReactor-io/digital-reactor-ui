@@ -16,7 +16,7 @@ define([
                 return this;
             },
             save: function () {
-                Backbone.history.navigate('sites', {trigger:true});
+                Backbone.history.navigate('success', {trigger:true});
 
             }
         });

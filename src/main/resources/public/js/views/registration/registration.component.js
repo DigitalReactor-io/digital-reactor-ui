@@ -4,27 +4,31 @@ define([
         "views/registration/progressBarView",
         "views/registration/enterEmailView",
         "views/registration/accessView",
-        "views/registration/sitesView"
+        "views/registration/sitesView",
+        "views/registration/successView"
     ],
     function (Backbone,
               RegistrationComponentTemplate,
               ProgressBarView,
               EnterEmailView,
               AccessView,
-              SitesView) {
+              SitesView,
+              SuccessView) {
 
         var enterEmailView = new EnterEmailView();
         var accessView = new AccessView();
         var sitesView = new SitesView();
+        var successView = new SuccessView();
 
         var progressBarView = new ProgressBarView({step: 0});
 
         var RegistrationComponent = Backbone.View.extend({
-            _views: [enterEmailView, accessView, sitesView],
+            _views: [enterEmailView, accessView, sitesView, successView],
             STEPS: {
                 INITIAL: 1,
                 ACCESS: 2,
-                SITES: 3
+                SITES: 3,
+                SUCCESS: 4
             },
             registrationDialogs: "#registration-dialogs",
             progressBar: "#progress-bar",

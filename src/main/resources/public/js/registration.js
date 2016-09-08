@@ -34,7 +34,8 @@ require([
         routes: {
             '': 'index',
             'access': 'access',
-            'sites': 'sites'
+            'sites': 'sites',
+            'success': 'success'
         },
         index: function () {
             registrationComponent.goToStep(registrationComponent.STEPS.INITIAL);
@@ -44,6 +45,9 @@ require([
         },
         sites: function () {
             registrationComponent.goToStep(registrationComponent.STEPS.SITES);
+        },
+        success: function () {
+            registrationComponent.goToStep(registrationComponent.STEPS.SUCCESS);
         }
     });
 
