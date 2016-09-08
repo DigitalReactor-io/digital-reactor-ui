@@ -33,6 +33,9 @@ define(
                 });
 
                 return this;
+            },
+            setStep: function (number) {
+                this.step = number;
             }
         });
 

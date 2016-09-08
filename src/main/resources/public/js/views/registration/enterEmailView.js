@@ -22,7 +22,7 @@ define([
 
                 }
 
-                $.ajax({
+               /* $.ajax({
                     type: 'POST',
                     url: "/check/email",
                     contentType: 'application/json',
@@ -34,7 +34,11 @@ define([
                             alert('fine');
                         }
                     }
-                });
+                });*/
+
+                Backbone.history.navigate('access', {trigger:true});
+                //window.location = 'registration.html#access'
+              //  Backbone.history.navigate('cart');
 
             },
             _isFreeEmail: function (email) {
