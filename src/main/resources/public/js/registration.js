@@ -26,15 +26,14 @@ require([
     'backbone',
     'views/registration/registration.component'
 ], function (Backbone, RegistrationComponent) {
-    //localStorage.setItem('myCat', 'Tom');
     var registrationComponent = new RegistrationComponent();
     $("#registration-app").html(registrationComponent.render().el);
-    
+
     var Router = Backbone.Router.extend({
         routes: {
             '': 'index',
             'access': 'access',
-            'sites': 'sites',
+            'sites/session/:sessionId': 'sites',
             'success': 'success'
         },
         index: function () {
@@ -43,8 +42,8 @@ require([
         access: function () {
             registrationComponent.goToStep(registrationComponent.STEPS.ACCESS);
         },
-        sites: function () {
-            registrationComponent.goToStep(registrationComponent.STEPS.SITES);
+        sites: function (sessionId) {
+            registrationComponent.goToStep(registrationComponent.STEPS.SITES, {sessionId: sessionId});
         },
         success: function () {
             registrationComponent.goToStep(registrationComponent.STEPS.SUCCESS);

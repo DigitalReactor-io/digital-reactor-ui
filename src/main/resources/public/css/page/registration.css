@@ -13,3 +13,7 @@ body {
     font-weight: 900;
     font-size: 60px;
 }
+
+.loading {
+    margin-bottom: 10px;
+}

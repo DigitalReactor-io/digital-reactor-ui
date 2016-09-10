@@ -7,19 +7,19 @@
             <p>Выберите счетчик, который требуется проанализировать.</p>
         </div>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5 loading">
+                <img src="images/loading.gif" />
+            </div>
+            <div id="project-selector" class="col-md-5 hidden">
                 <div class="form-group">
-                    <label for="default" class="control-label">Счётчик:</label>
-                    <select class="bs-select form-control">
-                        <option>cvetomaster.ru</option>
-                        <option>cvetomaster.ru</option>
-                        <option>cvetomaster.ru</option>
+                    <label for="project-list" class="control-label">Счётчик:</label>
+                    <select id="project-list" class="bs-select form-control">
                     </select>
                 </div>
             </div>
         </div>
         <div>
-            <button type="button" class="btn green-meadow" id="save">Получить отчёт</button>
+            <button type="button" class="btn green-meadow disabled" id="save">Получить отчёт</button>
         </div>
     </div>
 </div>

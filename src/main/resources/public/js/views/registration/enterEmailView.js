@@ -6,6 +6,7 @@ define([
         "text!templates/registration/enter-email.html"
     ],
     function (Backbone, EnterEmailTemplate) {
+        var USER_REGEXP_CONDITION = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var EmailEmailView = Backbone.View.extend({
             events: {
                 'click #go-to-information-step': "goToInformationStep"
@@ -18,31 +19,43 @@ define([
             goToInformationStep: function () {
                 this.$("#go-to-information-step").addClass("disabled");
                 var email = $("#email").val();
-                if (!email) {
-
+                if (this._isValidEmail(email)) {
+                    Backbone.trigger('error', {
+                        title: "Недопустимый адрес электронной почты",
+                        message: "Повторите попытку ввода или обратитесь в службу поддержки."
+                    });
+                    this.$("#go-to-information-step").removeClass("disabled");
+                    return;
                 }
 
-               /* $.ajax({
+                var self = this;
+
+                $.ajax({
                     type: 'POST',
                     url: "/check/email",
                     contentType: 'application/json',
-                    data: {email: email},
+                    data: JSON.stringify({email: email}),
                     dataType: 'json',
                     success: function (statusResult) {
-
                         if (statusResult == true) {
-                            alert('fine');
+                            localStorage.setItem('registration-email', email);
+                            Backbone.trigger('success');
+                            Backbone.history.navigate('access', {trigger: true});
+                        } else {
+                            Backbone.trigger('error', {
+                                title: "Недопустимый адрес электронной почты",
+                                message: "Данный адрес уже используется."
+                            });
                         }
+                        self.$("#go-to-information-step").removeClass("disabled");
+                    },
+                    fail: function () {
+                        self.$("#go-to-information-step").removeClass("disabled");
                     }
-                });*/
-
-                Backbone.history.navigate('access', {trigger:true});
-                //window.location = 'registration.html#access'
-              //  Backbone.history.navigate('cart');
-
+                });
             },
-            _isFreeEmail: function (email) {
-
+            _isValidEmail: function (email) {
+                return !USER_REGEXP_CONDITION.test(email);
             }
         });
 

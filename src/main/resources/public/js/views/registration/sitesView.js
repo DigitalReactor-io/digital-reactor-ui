@@ -3,21 +3,76 @@
  */
 define([
         "backbone",
-        "text!templates/registration/accessible-project.html"
+        "text!templates/registration/accessible-project.html",
+        "collections/registration/countersCollection",
+        "models/registration/newAccountModel"
     ],
-    function (Backbone, SitesTemplate) {
+    function (Backbone, SitesTemplate, CountersCollection, NewAccountModel) {
+
         var SitesView = Backbone.View.extend({
+            currentSessionId: "",
             events: {
                 'click #save': "save"
             },
-            render: function () {
+            initialize: function () {
+
+            },
+            render: function (param) {
                 this.$el.html(_.template(SitesTemplate)({}));
+                this.currentSessionId = param.sessionId;
+                var self = this;
+                var counters = new CountersCollection({
+                    sessionId: param.sessionId
+                });
+
+                counters.fetch({
+                    success: function () {
+                        self.__selectorRender(counters);
+                    },
+                    error: function () {
+                        Backbone.trigger('error', {
+                            title: "Ошибка загрузки данных от Yandex.Metrika",
+                            message: "Повторите попытку ввода или обратитесь в службу поддержки."
+                        });
+                    }
+                });
 
                 return this;
             },
             save: function () {
-                Backbone.history.navigate('success', {trigger:true});
+                this.$("#project-selector").addClass("hidden");
+                this.$(".loading").removeClass("hidden");
 
+                var email = localStorage.getItem('registration-email');
+                var counterId = $('#project-selector').find(":selected").val();
+
+                var newAccount = new NewAccountModel({
+                    email: email,
+                    counterId: counterId,
+                    sessionId: this.currentSessionId
+                });
+
+                newAccount.save(null, {
+                    error: function() {
+                        Backbone.trigger('error', {
+                            title: "Ошибка при регистрации проекта",
+                            message: "Повторите попытку ввода или обратитесь в службу поддержки."
+                        });
+                    },
+                    success: function () {
+                        Backbone.history.navigate('success', {trigger: true});
+                    }
+                });
+            },
+            __selectorRender: function (counters) {
+                var list = $("#project-list");
+                counters.forEach(function (counter) {
+                    list.append(new Option(counter.get("name"), counter.get("id")));
+                });
+
+                this.$("#save").removeClass("disabled");
+                this.$("#project-selector").removeClass("hidden");
+                this.$(".loading").addClass("hidden");
             }
         });
 

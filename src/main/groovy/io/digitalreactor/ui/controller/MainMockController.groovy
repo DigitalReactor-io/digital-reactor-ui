@@ -18,4 +18,27 @@ class MainMockController {
     Boolean checkEmail(@RequestBody EmailCheckUI email) {
         return !["test@test.com"].contains(email.email);
     }
+
+    @RequestMapping(value = "/configuration/application/id", method = RequestMethod.GET)
+    @ResponseBody
+    String configurationApplicationId() {
+        return "dev";
+    }
+
+    @RequestMapping(value = "/registration/counters/{sessionId}", method = RequestMethod.GET)
+    @ResponseBody
+    List<Map> getCounterBySessionId(@PathVariable String sessionId) {
+        return [
+                [
+                        "id"  : 1,
+                        "name": "name 1",
+                ],
+                [
+                        "id"  : 2,
+                        "name": "name 2"
+                ]
+        ];
+    }
+
+
 }

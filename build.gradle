@@ -27,7 +27,7 @@ bootRun {
 }
 
 dependencies {
-    compile 'io.digitalreactor:digital-reactor-web:1.0-SNAPSHOT'
+    //compile 'io.digitalreactor:digital-reactor-web:1.0-SNAPSHOT'
     compile 'org.codehaus.groovy:groovy-all:2.3.11'
     compile("org.springframework.boot:spring-boot-starter-web:1.4.0.RELEASE")
     testCompile group: 'junit', name: 'junit', version: '4.11'
