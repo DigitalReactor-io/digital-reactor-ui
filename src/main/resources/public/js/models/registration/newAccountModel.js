@@ -9,7 +9,8 @@ define(
             defaults: {
                 counterId: "",
                 email: "",
-                sessionId: ""
+                sessionId: "",
+                name: ""
             }
         });
     }

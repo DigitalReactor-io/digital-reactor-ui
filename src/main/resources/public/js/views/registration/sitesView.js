@@ -44,12 +44,15 @@ define([
                 this.$(".loading").removeClass("hidden");
 
                 var email = localStorage.getItem('registration-email');
-                var counterId = $('#project-selector').find(":selected").val();
+                var selector = $('#project-selector').find(":selected");
+                var counterId = selector.val();
+                var name = selector.text();
 
                 var newAccount = new NewAccountModel({
                     email: email,
                     counterId: counterId,
-                    sessionId: this.currentSessionId
+                    sessionId: this.currentSessionId,
+                    name: name
                 });
 
                 newAccount.save(null, {
@@ -67,7 +70,7 @@ define([
             __selectorRender: function (counters) {
                 var list = $("#project-list");
                 counters.forEach(function (counter) {
-                    list.append(new Option(counter.get("name"), counter.get("id")));
+                    list.append(new Option(counter.get("name"), counter.get("counterId")));
                 });
 
                 this.$("#save").removeClass("disabled");

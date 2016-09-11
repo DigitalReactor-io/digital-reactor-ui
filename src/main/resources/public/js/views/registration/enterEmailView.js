@@ -32,7 +32,7 @@ define([
 
                 $.ajax({
                     type: 'POST',
-                    url: "/check/email",
+                    url: "accounts/check/email",
                     contentType: 'application/json',
                     data: JSON.stringify({email: email}),
                     dataType: 'json',

@@ -6,7 +6,7 @@ define(
     function (Backbone) {
         var CounterModel = Backbone.Model.extend({
             defaults: {
-                id: "",
+                counterId: "",
                 name: ""
             }
         });
