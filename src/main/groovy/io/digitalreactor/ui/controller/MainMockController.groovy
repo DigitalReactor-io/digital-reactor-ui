@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
+import java.time.LocalDate
+
 /**
  * Created by MStepachev on 07.09.2016.
  */
@@ -37,6 +39,28 @@ class MainMockController {
                         "id"  : 2,
                         "name": "name 2"
                 ]
+        ];
+    }
+
+    @RequestMapping(value = "/accounts/sites", method = RequestMethod.GET)
+    @ResponseBody
+    List<Map> getSites() {
+        return [
+                [
+                        "name": "milktech.ru"
+                ],
+                [
+                        "name": "cvetomaster.ru"
+                ]
+        ];
+    }
+
+    @RequestMapping(value = "/summaries/status/{siteName}", method = RequestMethod.GET)
+    @ResponseBody
+    Map getSummaryStatus(@PathVariable String siteName) {
+        return [
+                "status": "LOADING",
+                "date"  : LocalDate.now()
         ];
     }
 
