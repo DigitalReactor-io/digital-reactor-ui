@@ -17,7 +17,7 @@ define([
                 this.$el.html(_.template(SiteTemplate)({
                     name: this.model.get("name")
                 }));
-                this.$el.append(statusView.render().el);
+                this.$el.find(".status-box").html(statusView.render().el);
 
                 return this;
             }

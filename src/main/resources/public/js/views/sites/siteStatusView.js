@@ -28,7 +28,8 @@ define([
                 return this;
             },
             __statusRender: function (status) {
-                console.log(status);
+                this.$el.find(".loading").hide();
+                this.$el.find(".project-selector").show();
             }
         });
     }

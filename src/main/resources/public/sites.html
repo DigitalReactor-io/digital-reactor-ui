@@ -1,15 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
     <title>DigitalReactor</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/components.css" rel="stylesheet" type="text/css"/>
+    <link href="css/layout.css" rel="stylesheet" type="text/css"/>
+    <link href="css/darkblue.css" rel="stylesheet" type="text/css"/>
 </head>
-<!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
-      type="text/css"/>-->
-<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="css/v2.css" rel="stylesheet" type="text/css"/>
-<body>
-<div id="sites-app"></div>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo page-container-bg-solid">
+
+<div class="page-header -i navbar navbar-fixed-top">
+    <div class="page-header-inner">
+        <div class="page-logo">
+            <a href="sites.html">
+                <span class="logo-text">DigitalReactor</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="clearfix">
+</div>
+<div class="page-container">
+    <div class="page-sidebar-wrapper">
+        <div class="page-sidebar navbar-collapse collapse">
+            <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                   <li class="sidebar-toggler-wrapper">
+                    <div class="sidebar-toggler">
+                    </div>
+                </li>
+                <br>
+                <li class="start active open">
+                    <a href="javascript:;">
+                        <i class="icon-home"></i>
+                        <span class="title">Список счётчиков</span>
+                        <span class="selected"></span>
+                        <span class="arrow open"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">Список счётчиков</a>
+                        <i class="fa fa-angle-right"></i>
+                    </li>
+                </ul>
+            </div>
+            <h3 class="page-title">
+                Список счётчиков
+            </h3>
+            <div id="sites-app"></div>
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-footer">
+    <div class="page-footer-inner">
+        2016 &copy; DigitalReactor.io.
+    </div>
+    <div class="scroll-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+</div>
 </body>
 <script data-main="js/sites" src="js/libs/require.js"></script>
 </html>
