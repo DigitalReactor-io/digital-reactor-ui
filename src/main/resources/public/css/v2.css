@@ -7788,7 +7788,6 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
 
 [class^=m-icon-], [class^=m-icon-big-] {
     display: inline-block;
-    background-image: url(../img/syncfusion-icons.png);
     background-position: 0 0;
     background-repeat: no-repeat
 }
@@ -7844,10 +7843,6 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
 
 .btn.m-icon.m-icon-only {
     padding: 7px 10px 7px 6px
-}
-
-.m-icon-white {
-    background-image: url(../img/syncfusion-icons-white.png)
 }
 
 .m-icon-swapright {

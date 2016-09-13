@@ -4022,11 +4022,6 @@ Metro icons
   padding: 7px 10px 7px 6px;
 }
 
-/* white icon */
-.m-icon-white {
-  background-image: url(../images/thems/syncfusion-icons-white.png);
-}
-
 /*  Misc */
 .m-icon-swapright {
   background-position: -27px -10px;
