@@ -13,7 +13,7 @@ define([
                 this.model = options.model;
             },
             render: function () {
-                var statusView = new SiteStatusView({site: this.model.get("name")});
+                var statusView = new SiteStatusView({id: this.model.get("id")});
                 this.$el.html(_.template(SiteTemplate)({
                     name: this.model.get("name")
                 }));

@@ -16,6 +16,7 @@ define([
                 var self = this;
                 sitesCollection.fetch({
                     success: function () {
+                        self.$el.find(".loading").hide();
                         self.__sitesRender(sitesCollection);
                     },
                     error: function () {

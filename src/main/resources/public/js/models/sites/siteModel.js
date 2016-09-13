@@ -6,7 +6,8 @@ define(
     function (Backbone) {
         return Backbone.Model.extend({
             defaults: {
-                name: ""
+                name: "",
+                id: ""
             }
         });
     }

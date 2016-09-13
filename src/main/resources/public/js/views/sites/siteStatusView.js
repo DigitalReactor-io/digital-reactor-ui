@@ -9,10 +9,13 @@ define([
     function (Backbone, SiteStatusTemplate, SummaryStatusModel) {
         return Backbone.View.extend({
             site: '',
+            id: '',
             initialize: function (options) {
                 var self = this;
-                this.site = options.site;
-                var summaryStatus = new SummaryStatusModel({site: this.site}).fetch({
+                this.id = options.id;
+                var summaryStatus = new SummaryStatusModel({id: this.id});
+
+                summaryStatus.fetch({
                     success: function () {
                         self.__statusRender(summaryStatus);
                     },
@@ -29,7 +32,20 @@ define([
             },
             __statusRender: function (status) {
                 this.$el.find(".loading").hide();
-                this.$el.find(".project-selector").show();
+                switch(status.get('status')){
+                    case "NEW":{
+                        this.$el.find(".awaiting").show();
+                        break;
+                    }
+                    case "DONE":{
+                        this.$el.find(".project-selector").show();
+                        break;
+                    }
+                    case "LOADING":{
+                        this.$el.find(".loading").show();
+                        break;
+                    }
+                }
             }
         });
     }

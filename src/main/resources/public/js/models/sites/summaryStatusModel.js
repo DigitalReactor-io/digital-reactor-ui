@@ -11,7 +11,7 @@ define(
                 date: ""
             },
             initialize: function (options) {
-                this.url += options.site;
+                this.url += options.id;
             }
         });
     }
