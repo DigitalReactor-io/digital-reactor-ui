@@ -57,7 +57,7 @@ public class SummaryWebService implements SummaryWebServiceContract {
     }
 
     private boolean isHoliday(int dayIndex) {
-        return dayIndex % 7 == 0 || dayIndex % 6 == 0;
+        return dayIndex % 7 == 0 || (dayIndex+1) % 7 == 0;
     }
 
 }

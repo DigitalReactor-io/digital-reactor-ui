@@ -23,11 +23,17 @@ define([
                 });
             },
             render: function () {
+                google.charts.load('current', {'packages':['line', 'corechart']});
+                
                 return this;
             },
             __reportRender: function (reportModel) {
-                var reportView = ReportViewFactory.create(reportModel);
+                var ReportView = ReportViewFactory.create(reportModel);
+                var reportView = new ReportView({
+                    data: reportModel
+                });
 
+                this.$el.append(reportView.render().el);
             }
         });
     }
