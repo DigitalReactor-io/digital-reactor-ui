@@ -3,14 +3,13 @@ package io.digitalreactor.ui.web;
 import io.digitalreactor.web.contract.SummaryWebServiceContract;
 import io.digitalreactor.web.contract.dto.SummaryStatusEnum;
 import io.digitalreactor.web.contract.dto.SummaryStatusUI;
-import io.digitalreactor.web.contract.dto.report.ActionEnum;
-import io.digitalreactor.web.contract.dto.report.VisitDto;
-import io.digitalreactor.web.contract.dto.report.VisitsDuringMonthReportDto;
+import io.digitalreactor.web.contract.dto.report.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -23,6 +22,11 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequestMapping(value = SummaryWebServiceContract.WEB_SERVICE_PATH)
 public class SummaryWebService implements SummaryWebServiceContract {
+
+    private final String ADVERTISING_SOURCE = "Переходы по рекламе";
+    private final String SEARCH_SYSTEM_SOURCE = "Переходы из поисковых систем";
+    private final String SOCIAL_NETWORK_SOURCE = "Переходы из соц. сетей";
+
     @RequestMapping(value = SITE_STATUS_PATH, method = RequestMethod.GET)
     @ResponseBody
     @Override
@@ -35,21 +39,42 @@ public class SummaryWebService implements SummaryWebServiceContract {
     @Override
     public List<Object> getSummary(@PathVariable String summaryId) {
 
-        List<VisitDto> visitDtos = IntStream.range(0, 30).mapToObj(indexDay -> new VisitDto(
+        return Arrays.asList(
+                visitsDuringMonthReportDto(),
+                referringSourceReportDto()
+        );
+    }
+
+    private ReferringSourceReportDto referringSourceReportDto() {
+        return new ReferringSourceReportDto(
+                Arrays.asList(
+                        new ReferringSourceDto(ADVERTISING_SOURCE, 10, 10, 10, 10, 10, 10, crateMetricsVisit()),
+                        new ReferringSourceDto(SEARCH_SYSTEM_SOURCE, 10, 10, 10, 10, 10, 10, crateMetricsVisit()),
+                        new ReferringSourceDto(SOCIAL_NETWORK_SOURCE, 10, 10, 10, 10, 10, 10, crateMetricsVisit())
+                ),
+                40,
+                12.3,
+                232,
+                ActionEnum.INCREASING
+        );
+    }
+
+    private VisitsDuringMonthReportDto visitsDuringMonthReportDto() {
+        return new VisitsDuringMonthReportDto(
+                10,
+                10,
+                ActionEnum.INCREASING,
+                crateMetricsVisit(),
+                "Reason"
+        );
+    }
+
+    private List<VisitDto> crateMetricsVisit() {
+        return IntStream.range(0, 30).mapToObj(indexDay -> new VisitDto(
                 indexDay,
                 LocalDate.now().minusDays(indexDay).toString(),
                 dayType(indexDay)
         )).collect(toList());
-
-        VisitsDuringMonthReportDto visitsDuringMonthReportDto = new VisitsDuringMonthReportDto(
-                10,
-                10,
-                ActionEnum.INCREASING,
-                visitDtos,
-                "Reason"
-        );
-
-        return Arrays.asList(visitsDuringMonthReportDto);
     }
 
     private VisitDto.DayType dayType(int dayIndex) {
@@ -57,7 +82,7 @@ public class SummaryWebService implements SummaryWebServiceContract {
     }
 
     private boolean isHoliday(int dayIndex) {
-        return dayIndex % 7 == 0 || (dayIndex+1) % 7 == 0;
+        return dayIndex % 7 == 0 || (dayIndex + 1) % 7 == 0;
     }
 
 }
