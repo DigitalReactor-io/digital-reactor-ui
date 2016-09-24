@@ -2,19 +2,21 @@
  * Created by MStepachev on 14.09.2016.
  */
 define([
-        "backbone", "collections/summary/summaryCollection", "views/reports/reportViewFactory"
+        "backbone", "models/summary/summaryModel", "views/reports/reportViewFactory"
     ],
-    function (Backbone, SummaryCollection, ReportViewFactory) {
-        var summaryCollection = new SummaryCollection({
-            summaryId: "devSummaryId"
-        });
+    function (Backbone, SummaryModel, ReportViewFactory) {
+        
         return Backbone.View.extend({
-            initialize: function () {
+            initialize: function (options) {
+                var summaryModel = new SummaryModel({
+                    summaryTaskId: options.summaryTaskId
+                });
+                
                 var self = this;
-                summaryCollection.fetch({
+                summaryModel.fetch({
                     success: function () {
-                        summaryCollection.forEach(function (reportModel) {
-                            self.__reportRender(reportModel);
+                        summaryModel.get('reports').forEach(function (reportModel) {
+                            self.__reportRender(new Backbone.Model(reportModel));
                         });
                     },
                     error: function () {

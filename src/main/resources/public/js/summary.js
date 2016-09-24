@@ -25,8 +25,17 @@ require.config({
 define(
     ["backbone", "views/summary/summary.component"],
     function (Backbone, SummaryComponent) {
-        var summaryComponent = new SummaryComponent();
-        
-        $("#sites-app").html(summaryComponent.render().el);
+        var Router = Backbone.Router.extend({
+            routes: {
+                'task/:taskId': 'summary'
+            },
+            summary: function (taskId) {
+                var summaryComponent = new SummaryComponent({summaryTaskId: taskId});
+                $("#sites-app").html(summaryComponent.render().el);
+            }
+        });
+
+        new Router();
+        Backbone.history.start();
     }
 );

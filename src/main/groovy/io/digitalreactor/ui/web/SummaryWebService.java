@@ -30,19 +30,23 @@ public class SummaryWebService implements SummaryWebServiceContract {
     @RequestMapping(value = SITE_STATUS_PATH, method = RequestMethod.GET)
     @ResponseBody
     @Override
-    public SummaryStatusUI getSummaryStatus(@PathVariable String siteName) {
-        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(), LocalDate.now());
+    public SummaryStatusUI getSummaryStatus(@PathVariable String siteId) {
+        if(siteId.equals("id1")) {
+            return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), LocalDate.now(), "taskId");
+        }
+
+        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(), LocalDate.now(), "taskId");
     }
 
-    @RequestMapping(value = SUMMARY_PATH, method = RequestMethod.GET)
+    @RequestMapping(value = SUMMARY_TASK_PATH, method = RequestMethod.GET)
     @ResponseBody
     @Override
-    public List<Object> getSummary(@PathVariable String summaryId) {
+    public Summary getSummary(@PathVariable String summaryTaskId) {
 
-        return Arrays.asList(
+        return new Summary("sfa3r43f3", Arrays.asList(
                 visitsDuringMonthReportDto(),
                 referringSourceReportDto()
-        );
+        ));
     }
 
     private ReferringSourceReportDto referringSourceReportDto() {
