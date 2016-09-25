@@ -2,10 +2,15 @@
  * Created by ingvard on 17.09.16.
  */
 define(
-    ["backbone", "views/reports/visitsDuringMonthReport"],
-    function (Backbone, VisitsDuringMonthReport) {
+    [
+        "backbone",
+        "views/reports/visitsDuringMonthReport",
+        "views/reports/referringSourceReport"
+    ],
+    function (Backbone, VisitsDuringMonthReport, ReferringSourceReport) {
         var registry = {
-            "VISITS_DURING_MONTH": VisitsDuringMonthReport
+            "VISITS_DURING_MONTH": VisitsDuringMonthReport,
+            "REFERRING_SOURCE": ReferringSourceReport
         };
 
         return {

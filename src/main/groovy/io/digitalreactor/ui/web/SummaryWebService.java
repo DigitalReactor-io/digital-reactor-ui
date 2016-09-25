@@ -4,6 +4,9 @@ import io.digitalreactor.web.contract.SummaryWebServiceContract;
 import io.digitalreactor.web.contract.dto.SummaryStatusEnum;
 import io.digitalreactor.web.contract.dto.SummaryStatusUI;
 import io.digitalreactor.web.contract.dto.report.*;
+import io.digitalreactor.web.contract.dto.report.referringsource.GoalReferringSources;
+import io.digitalreactor.web.contract.dto.report.referringsource.ReferringSource;
+import io.digitalreactor.web.contract.dto.report.referringsource.ReferringSourceReport;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -31,7 +34,7 @@ public class SummaryWebService implements SummaryWebServiceContract {
     @ResponseBody
     @Override
     public SummaryStatusUI getSummaryStatus(@PathVariable String siteId) {
-        if(siteId.equals("id1")) {
+        if (siteId.equals("id1")) {
             return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), LocalDate.now(), "taskId");
         }
 
@@ -43,24 +46,69 @@ public class SummaryWebService implements SummaryWebServiceContract {
     @Override
     public Summary getSummary(@PathVariable String summaryTaskId) {
 
+        if (summaryTaskId.equals("2")) {
+            return new Summary("sfa3r43f3", Arrays.asList(
+                    visitsDuringMonthReportDto(),
+                    referringSourceReportWithoutSources()
+            ));
+        }
+
         return new Summary("sfa3r43f3", Arrays.asList(
                 visitsDuringMonthReportDto(),
-                referringSourceReportDto()
+                referringSourceReport()
         ));
     }
 
-    private ReferringSourceReportDto referringSourceReportDto() {
-        return new ReferringSourceReportDto(
-                Arrays.asList(
-                        new ReferringSourceDto(ADVERTISING_SOURCE, 10, 10, 10, 10, 10, 10, crateMetricsVisit()),
-                        new ReferringSourceDto(SEARCH_SYSTEM_SOURCE, 10, 10, 10, 10, 10, 10, crateMetricsVisit()),
-                        new ReferringSourceDto(SOCIAL_NETWORK_SOURCE, 10, 10, 10, 10, 10, 10, crateMetricsVisit())
-                ),
-                40,
-                12.3,
-                232,
-                ActionEnum.INCREASING
+    private ReferringSourceReport referringSourceReportWithoutSources() {
+        return new ReferringSourceReport(createReferringSource(), null);
+    }
+
+    private ReferringSourceReport referringSourceReport() {
+        return new ReferringSourceReport(createReferringSource(), goalReferringSources());
+    }
+
+    private List<GoalReferringSources> goalReferringSources() {
+        List<GoalReferringSources> goalReferringSources = new ArrayList<>();
+
+        goalReferringSources.add(goalReferringSources("Goal #1"));
+        goalReferringSources.add(goalReferringSources("Goal #2"));
+
+        return goalReferringSources;
+    }
+
+    private GoalReferringSources goalReferringSources(String name) {
+        return new GoalReferringSources(name, createReferringSource(), random(), random(), random());
+    }
+
+    private List<ReferringSource> createReferringSource() {
+        List<ReferringSource> referringSources = new ArrayList<>();
+        referringSources.add(referringSource(ADVERTISING_SOURCE));
+        referringSources.add(referringSource(SEARCH_SYSTEM_SOURCE));
+        referringSources.add(referringSource(SOCIAL_NETWORK_SOURCE));
+
+
+        return referringSources;
+    }
+
+    private ReferringSource referringSource(String name) {
+        return new ReferringSource(
+                name,
+                crateMetricsVisit(),
+                random(),
+                random(),
+                random(),
+                random(),
+                random(),
+                random()
         );
+    }
+
+    private List<Integer> randomListWithInt() {
+        return IntStream.range(0, 30).mapToObj(indexDay -> (int) (Math.random() * 1000) + indexDay).collect(toList());
+    }
+
+    private int random() {
+        return (int) (Math.random() * 1000) - 100;
     }
 
     private VisitsDuringMonthReportDto visitsDuringMonthReportDto() {
@@ -75,7 +123,7 @@ public class SummaryWebService implements SummaryWebServiceContract {
 
     private List<VisitDto> crateMetricsVisit() {
         return IntStream.range(0, 30).mapToObj(indexDay -> new VisitDto(
-                indexDay,
+                Math.abs(random()),
                 LocalDate.now().minusDays(indexDay).toString(),
                 dayType(indexDay)
         )).collect(toList());

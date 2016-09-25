@@ -2,83 +2,138 @@
  * Created by MStepachev on 12.05.2016.
  */
 
-function ReferringSourceReport(details, templateHbs) {
-    var template = Handlebars.compile(templateHbs);
+define(
+    [
+        "backbone",
+        "text!templates/reports/referringSourceReport.html",
+        "views/reports/rsr/referringSourceTable",
+        "views/reports/rsr/goalSelector",
+        "views/reports/rsr/infoAboutChange"
 
-    function chart() {
-
-        google.charts.setOnLoadCallback(drawReferringSourceChart);
-
-        function drawReferringSourceChart() {
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Day');
-
-            var maxLength = 0;
-
-            for (i = 0; i < details.sources.length; i++) {
-                maxLength = Math.max(maxLength, details.sources[i].metrics.length);
-                data.addColumn('number', details.sources[i].name);
-            }
-
-            var chartDots = [];
-
-            for (i = 0; i < maxLength; i++) {
-                var row = [];
-                row.push(details.sources[0].metrics[i].date);
-                for (j = 0; j < details.sources.length; j++) {
-                    row.push(details.sources[j].metrics[i].number);
+    ],
+    function (Backbone, ReferringSourceReport, ReferringSourceTable, GoalSelector, InfoAboutChange) {
+        return Backbone.View.extend({
+            data: null,
+            goalSelector: null,
+            sourceTable: null,
+            sourceInfo: null,
+            withConversion: false,
+            initialize: function (options) {
+                this.data = options.data;
+                if (this.data.get("sourcesWithGoals")) {
+                    this.goalSelector = new GoalSelector({
+                        goals: this.data.get("sourcesWithGoals")
+                    });
+                    this.withConversion = true;
                 }
-                chartDots.push(row);
+
+                this.__initSubComponent(0);
+
+                Backbone.on("changeGoalSelector", this.__changeGoal, this);
+            },
+            render: function () {
+                this.$el.html(_.template(ReferringSourceReport)({}));
+
+                if (this.goalSelector) {
+                    var referringSourceSelector = this.$el.find("#referringSourceSelector");
+                    referringSourceSelector.html(this.goalSelector.render().el);
+                }
+
+                this.chart();
+
+                this.__dataRender();
+
+                return this;
+            },
+            __dataRender: function () {
+                var referringSourceTable = this.$el.find("#referringSourceTable");
+                referringSourceTable.html(this.sourceTable.render().el);
+
+                var referringSourceInfo = this.$el.find("#referringSourceInfo");
+                referringSourceInfo.html(this.sourceInfo.render().el);
+            },
+            __changeGoal: function (context) {
+                var goalIndex = this.__findGoalIndex(context.currentGoal);
+                this.__initSubComponent(goalIndex);
+
+                this.__dataRender();
+            },
+            __findGoalIndex: function (name) {
+                var index = 0;
+                $.each(this.data.get("sourcesWithGoals"), function (i, value) {
+                    if (value.name === name) {
+                        index = i;
+                        return;
+                    }
+                });
+
+                return index;
+            },
+            __initSubComponent: function (indexGoal) {
+
+                var sources = this.data.get("sources");
+                var infoConstructorData = {
+                    withConversion: this.withConversion
+                };
+
+                if (this.withConversion) {
+                    sources = this.data.get("sourcesWithGoals")[indexGoal].sources;
+                    infoConstructorData.conversion = this.data.get("sourcesWithGoals")[indexGoal].conversion;
+                    infoConstructorData.conversionChange = this.data.get("sourcesWithGoals")[indexGoal].conversionChange;
+                    infoConstructorData.numberOfCompletedGoal = this.data.get("sourcesWithGoals")[indexGoal].numberOfCompletedGoal;
+                }
+
+                this.sourceTable = new ReferringSourceTable({
+                    withConversion: this.withConversion,
+                    sources: sources
+                });
+
+                this.sourceInfo = new InfoAboutChange(infoConstructorData);
+            },
+            chart: function () {
+                google.charts.setOnLoadCallback(drawReferringSourceChart);
+
+                var self = this;
+
+                function drawReferringSourceChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Day');
+
+                    for (i = 0; i < self.data.get("sources").length; i++) {
+                        data.addColumn('number', self.data.get("sources")[i].name);
+                    }
+
+
+                    var chartDots = [];
+
+
+                    for (i = 0; i < self.data.get("sources")[0].metrics.length; i++) {
+                        var row = [];
+                        row.push(self.data.get("sources")[0].metrics[i].date);
+                        for (j = 0; j < self.data.get("sources").length; j++) {
+                            row.push(self.data.get("sources")[j].metrics[i].number);
+                        }
+
+                        chartDots.push(row);
+                    }
+
+                    data.addRows(chartDots);
+
+                    var options = {
+                        chart: {
+                            title: 'Ситочники трафика'
+                        },
+                        interpolateNulls: true,
+                        width: 900,
+                        height: 300
+                    };
+
+                    var chart = new google.charts.Line(document.getElementById("referring-source-chart"));
+
+                    chart.draw(data, options);
+                }
+
             }
-
-            data.addRows(chartDots);
-
-            var options = {
-                chart: {
-                    title: 'Ситочники трафика'
-                },
-                interpolateNulls: true,
-                width: 900,
-                height: 300
-            };
-
-            var chart = new google.charts.Line(document.getElementById("referring-source-chart"));
-
-            chart.draw(data, options);
-        }
-
+        });
     }
-
-    function description() {
-        switch (details.action) {
-            case 'INCREASING':
-            {
-                return "Конверсия сайта увеличилась на " + details.totalConversionChange + "% и составила " + details.totalConversion + "%."
-            }
-            case 'DECREASING':
-            {
-                return "Конверсия сайта уменьшилась на " + details.totalConversionChange + "% и составила " + details.totalConversion + "%."
-            }
-            case 'UNALTERED':
-            {
-                return "Конверсия сайта не изменилась и составила " + details.totalConversion + "%."
-            }
-        }
-    }
-
-    return {
-        render: function () {
-            var options = {
-                sources: details.sources,
-                description: description(),
-                goals: details.totalGoals
-            };
-
-            chart();
-
-            return template(options);
-        }
-    }
-
-}
+);
