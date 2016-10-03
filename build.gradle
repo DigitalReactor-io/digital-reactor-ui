@@ -22,6 +22,14 @@ repositories {
     mavenLocal()
 }
 
+sourceSets {
+    main {
+        resources {
+            exclude 'application.properties'
+        }
+    }
+}
+
 bootRun {
     addResources = true
 }

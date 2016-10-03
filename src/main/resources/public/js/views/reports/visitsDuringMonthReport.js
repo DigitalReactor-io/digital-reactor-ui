@@ -1,83 +1,82 @@
 /**
  * Created by MStepachev on 11.05.2016.
  */
+define(
+    ["backbone", "text!templates/reports/visitsDuringMonthReport.html"],
+    function (Backbone, VisitsDuringMonthReport) {
+        return Backbone.View.extend({
+            data: null,
+            initialize: function (options) {
+                this.data = options.data;
+            },
+            render: function () {
 
-function VisitsDuringMonthReport(details, templateHbs) {
+                this.$el.html(_.template(VisitsDuringMonthReport)({
+                    description: this.__description(),
+                    reason: this.data.get("reason")
+                }));
 
-    var template = Handlebars.compile(templateHbs);
+                this.__chart();
 
-    function chart() {
+                return this;
+            },
+            __description: function () {
+                switch (this.data.get("action")) {
+                    case 'INCREASING':
+                    {
+                        return "Посещаемость увеличилась на " + this.data.get("percent") + "% (" + this.data.get("visit") + " визитов)."
+                    }
+                    case 'DECREASING':
+                    {
+                        return "Посещаемость уменьшилась на " + this.data.get("percent") + "% (" + this.data.get("visit") + " визитов)."
+                    }
+                    case 'UNALTERED':
+                    {
+                        return "Посещаемость не изменилась: " + this.data.get("visit") + " визитов."
+                    }
+                }
+            },
+            __chart: function () {
+                var self = this;
+                google.charts.setOnLoadCallback(drawChart);
 
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var ar = [["Element", "Density", {role: "style"}]];
+                function drawChart() {
+                    var ar = [];
 
-            for (i = 0; i < details.metrics.length; i++) {
-                ar.push([
-                    details.metrics[i].date,
-                    details.metrics[i].number,
-                    details.metrics[i].dayType == "HOLIDAY" ? 'color: #EE67F7' : 'color: #76A7FA'
-                ]);
+                    for (i = 0; i < self.data.get("metrics").length; i++) {
+
+                        ar.push({
+                            c: [
+                                {v: self.data.get("metrics")[i].date},
+                                {v: self.data.get("metrics")[i].number},
+                                {v: self.data.get("metrics")[i].dayType == "HOLIDAY" ? 'color: #EE67F7' : 'color: #76A7FA'}
+                            ]
+                        });
+                    }
+
+
+                    var dt = new google.visualization.DataTable({
+                        cols: [{id: 'task', label: 'Task', type: 'string'},
+                            {id: 'hours', label: 'Hours per Day', type: 'number'},
+                            {type: 'string', role: 'style'}
+                        ],
+                        rows: ar
+                    }, 0.6);
+
+                    var view = new google.visualization.DataView(dt);
+
+                    var options = {
+                        interpolateNulls: true,
+                        title: "Визиты за 30 дней",
+                        width: 900,
+                        height: 300,
+                        bar: {groupWidth: "95%"},
+                        legend: {position: "none"}
+                    };
+                    var chart = new google.visualization.ColumnChart(document.getElementById("visitsDuringMonthReport"));
+                    chart.draw(view, options);
+                }
             }
-
-            var data = google.visualization.arrayToDataTable(ar);
-
-            var view = new google.visualization.DataView(data);
-            view.setColumns([0, 1,
-                {
-                    calc: "stringify",
-                    sourceColumn: 1,
-                    type: "string",
-                    role: "annotation"
-                },
-                2]);
-
-            var options = {
-                interpolateNulls: true,
-                title: "Визиты за 30 дней",
-                width: 900,
-                height: 300,
-                bar: {groupWidth: "95%"},
-                legend: {position: "none"},
-            };
-            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
-            chart.draw(view, options);
-        }
-
+        });
     }
-
-    function description() {
-        switch (details.action) {
-            case 'INCREASING':
-            {
-                return "Посещаемость увеличилась на "+details.percent+"% ("+details.visit+" визитов)."
-            }
-            case 'DECREASING':
-            {
-                return "Посещаемость уменьшилась на "+details.percent+"% ("+details.visit+" визитов)."
-            }
-            case 'UNALTERED':
-            {
-                return "Посещаемость не изменилась: "+details.visit+" визитов."
-            }
-        }
-    }
-
-    function reason() {
-        return details.reason;
-    }
-
-    return {
-        render: function () {
-            var templateData = {
-                description: description(),
-                reason: reason()
-            };
-
-            chart();
-
-            return template(templateData);
-        }
-    };
-
-}
+);

@@ -26,11 +26,11 @@ define([
 
             },
             render: function () {
-                this.$el.html(_.template(SiteStatusTemplate)({}));
-
                 return this;
             },
             __statusRender: function (status) {
+                this.$el.html(_.template(SiteStatusTemplate)({taskId: status.get('taskId')}));
+
                 this.$el.find(".loading").hide();
                 switch(status.get('status')){
                     case "NEW":{
