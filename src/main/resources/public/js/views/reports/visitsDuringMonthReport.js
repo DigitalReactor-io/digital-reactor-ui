@@ -49,7 +49,7 @@ define(
                             c: [
                                 {v: self.data.get("metrics")[i].date},
                                 {v: self.data.get("metrics")[i].number},
-                                {v: self.data.get("metrics")[i].dayType == "HOLIDAY" ? 'color: #EE67F7' : 'color: #76A7FA'}
+                                {v: self.data.get("metrics")[i].dayType == "HOLIDAY" ? 'color: #578EBE' : 'color: #5C9BD1'}
                             ]
                         });
                     }
@@ -57,7 +57,7 @@ define(
 
                     var dt = new google.visualization.DataTable({
                         cols: [{id: 'task', label: 'Task', type: 'string'},
-                            {id: 'hours', label: 'Hours per Day', type: 'number'},
+                            {id: 'hours', label: 'Визитов', type: 'number'},
                             {type: 'string', role: 'style'}
                         ],
                         rows: ar
@@ -68,10 +68,15 @@ define(
                     var options = {
                         interpolateNulls: true,
                         title: "Визиты за 30 дней",
+                        titleTextStyle: {
+                            bold: false
+                        },
+                        chartArea: {
+                            left: 50
+                        },
                         width: 900,
                         height: 300,
-                        bar: {groupWidth: "95%"},
-                        legend: {position: "none"}
+                        bar: {groupWidth: "95%"}
                     };
                     var chart = new google.visualization.ColumnChart(document.getElementById("visitsDuringMonthReport"));
                     chart.draw(view, options);

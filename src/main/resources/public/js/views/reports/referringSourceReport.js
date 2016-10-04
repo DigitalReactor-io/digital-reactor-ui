@@ -97,7 +97,7 @@ define(
 
                 function drawReferringSourceChart() {
                     var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Day');
+                    data.addColumn('string');
 
                     for (i = 0; i < self.data.get("sources").length; i++) {
                         data.addColumn('number', self.data.get("sources")[i].name);
@@ -121,7 +121,7 @@ define(
 
                     var options = {
                         chart: {
-                            title: 'Ситочники трафика'
+                            title: 'Иточники трафика'
                         },
                         interpolateNulls: true,
                         width: 900,
