@@ -20,7 +20,7 @@ define(
             withConversion: false,
             initialize: function (options) {
                 this.data = options.data;
-                if (this.data.get("sourcesWithGoals")) {
+                if (this.data.get("sourcesWithGoals") && this.data.get("sourcesWithGoals").length) {
                     this.goalSelector = new GoalSelector({
                         goals: this.data.get("sourcesWithGoals")
                     });
