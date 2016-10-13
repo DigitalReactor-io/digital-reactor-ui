@@ -4,6 +4,7 @@ package io.digitalreactor.ui.web;
 
 import io.digitalreactor.web.contract.AccountWebServiceContract;
 import io.digitalreactor.web.contract.dto.EmailCheckUI;
+import io.digitalreactor.web.contract.dto.ShortUserInfoUI;
 import io.digitalreactor.web.contract.dto.SiteUI;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,13 @@ import static io.digitalreactor.web.contract.AccountWebServiceContract.WEB_SERVI
 @RestController
 @RequestMapping(value = WEB_SERVICE_PATH)
 class AccountWebService implements AccountWebServiceContract {
+    @RequestMapping(value = SHORT_INFO, method = RequestMethod.GET)
+    @ResponseBody
+    @Override
+    public ShortUserInfoUI getShortInfo() {
+        return new ShortUserInfoUI("guest");
+    }
+
     @RequestMapping(value = EMAIL_CHECK_PATH, method = RequestMethod.POST)
     @ResponseBody
     @Override

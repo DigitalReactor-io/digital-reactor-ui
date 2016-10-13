@@ -4,10 +4,10 @@
 <div class="col-md-5 awaiting" style="display: none;">
     <h3>Ожидает обработки...</h3>
 </div>
-<div class="col-md-5 project-selector" style="display: none;">
+<div class="col-md-12 project-selector" style="display: none;">
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">Обновить</div>
-        <div class="col-md-4"><a href="summary.html#task/<%= taskId %>">смотреть отчёт</a></div>
+        <div class="col-md-4"><%= date %></div>
+        <div class="col-md-6"><span class="glyphicon glyphicon-refresh"></span> Обновить отчет</div>
+        <div class="col-md-2"><a href="summary.html#task/<%= taskId %>"><button type="button" class="btn green-meadow">Смотреть отчет</button></a></div>
     </div>
 </div>

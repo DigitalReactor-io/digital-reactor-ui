@@ -10,10 +10,7 @@ import io.digitalreactor.web.contract.dto.report.referringsource.ReferringSource
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -35,10 +32,10 @@ public class SummaryWebService implements SummaryWebServiceContract {
     @Override
     public SummaryStatusUI getSummaryStatus(@PathVariable String siteId) {
         if (siteId.equals("id1")) {
-            return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), LocalDate.now(), "taskId");
+            return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), new Date(), "taskId");
         }
 
-        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(), LocalDate.now(), "taskId");
+        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(),  new Date(), "taskId");
     }
 
     @RequestMapping(value = SUMMARY_TASK_PATH, method = RequestMethod.GET)
@@ -115,6 +112,7 @@ public class SummaryWebService implements SummaryWebServiceContract {
         return new VisitsDuringMonthReportDto(
                 10,
                 10,
+                1.0,
                 ActionEnum.INCREASING,
                 crateMetricsVisit(),
                 "Reason"
