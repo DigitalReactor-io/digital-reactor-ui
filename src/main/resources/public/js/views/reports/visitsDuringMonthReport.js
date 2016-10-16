@@ -21,14 +21,16 @@ define(
                 return this;
             },
             __description: function () {
+
+                var percent = this.data.get("percent").toFixed(2);
                 switch (this.data.get("action")) {
                     case 'INCREASING':
                     {
-                        return "Посещаемость увеличилась на " + this.data.get("percent") + "% (" + this.data.get("visit") + " визитов)."
+                        return "Посещаемость увеличилась на " + percent + "% (" + this.data.get("visitChange") + " визитов)."
                     }
                     case 'DECREASING':
                     {
-                        return "Посещаемость уменьшилась на " + this.data.get("percent") + "% (" + this.data.get("visit") + " визитов)."
+                        return "Посещаемость уменьшилась на " + percent + "% (" + this.data.get("visitChange") + " визитов)."
                     }
                     case 'UNALTERED':
                     {

@@ -38,6 +38,6 @@ class AccountWebService implements AccountWebServiceContract {
     @ResponseBody
     @Override
     public List<SiteUI> getSites() {
-        return Arrays.asList(new SiteUI("milktech.ru","id1"), new SiteUI("cvetomaster.ru", "id2"));
+        return Arrays.asList(new SiteUI("milktech.ru","id1"), new SiteUI("Empty site","id3"), new SiteUI("cvetomaster.ru", "id2"));
     }
 }

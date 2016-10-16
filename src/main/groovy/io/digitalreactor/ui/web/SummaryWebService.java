@@ -35,6 +35,10 @@ public class SummaryWebService implements SummaryWebServiceContract {
             return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), new Date(), "taskId");
         }
 
+        if(siteId.equals("id3")){
+            return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), new Date(), "taskId2");
+        }
+
         return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(),  new Date(), "taskId");
     }
 
@@ -54,6 +58,13 @@ public class SummaryWebService implements SummaryWebServiceContract {
                 visitsDuringMonthReportDto(),
                 referringSourceReport()
         ));
+    }
+
+    @RequestMapping(value = RELOAD_SUMMARY_PATH, method = RequestMethod.PUT)
+    @ResponseBody
+    @Override
+    public SummaryStatusUI reloadSummary(String siteId) {
+        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(),  new Date(), "taskId");
     }
 
     private ReferringSourceReport referringSourceReportWithoutSources() {
@@ -112,7 +123,7 @@ public class SummaryWebService implements SummaryWebServiceContract {
         return new VisitsDuringMonthReportDto(
                 10,
                 10,
-                1.0,
+                1.235346643643534,
                 ActionEnum.INCREASING,
                 crateMetricsVisit(),
                 "Reason"
