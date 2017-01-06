@@ -4,6 +4,10 @@ import io.digitalreactor.web.contract.SummaryWebServiceContract;
 import io.digitalreactor.web.contract.dto.SummaryStatusEnum;
 import io.digitalreactor.web.contract.dto.SummaryStatusUI;
 import io.digitalreactor.web.contract.dto.report.*;
+import io.digitalreactor.web.contract.dto.report.direct.DSPCutType;
+import io.digitalreactor.web.contract.dto.report.direct.DirectSearchPhraseCutDto;
+import io.digitalreactor.web.contract.dto.report.direct.DirectSearchPhraseDto;
+import io.digitalreactor.web.contract.dto.report.direct.DirectSearchPhraseReportDto;
 import io.digitalreactor.web.contract.dto.report.referringsource.GoalReferringSources;
 import io.digitalreactor.web.contract.dto.report.referringsource.ReferringSource;
 import io.digitalreactor.web.contract.dto.report.referringsource.ReferringSourceReport;
@@ -14,6 +18,8 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -35,11 +41,11 @@ public class SummaryWebService implements SummaryWebServiceContract {
             return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), new Date(), "taskId");
         }
 
-        if(siteId.equals("id3")){
+        if (siteId.equals("id3")) {
             return new SummaryStatusUI(SummaryStatusEnum.DONE.name(), new Date(), "taskId2");
         }
 
-        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(),  new Date(), "taskId");
+        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(), new Date(), "taskId");
     }
 
     @RequestMapping(value = SUMMARY_TASK_PATH, method = RequestMethod.GET)
@@ -48,15 +54,17 @@ public class SummaryWebService implements SummaryWebServiceContract {
     public Summary getSummary(@PathVariable String summaryTaskId) {
 
         if (summaryTaskId.equals("2")) {
-            return new Summary("sfa3r43f3", Arrays.asList(
+            return new Summary("sfa3r43f3", asList(
                     visitsDuringMonthReportDto(),
-                    referringSourceReportWithoutSources()
+                    referringSourceReportWithoutSources(),
+                    directSearchPhraseReportDto()
             ));
         }
 
-        return new Summary("sfa3r43f3", Arrays.asList(
+        return new Summary("sfa3r43f3", asList(
                 visitsDuringMonthReportDto(),
-                referringSourceReport()
+                referringSourceReport(),
+                directSearchPhraseReportDto()
         ));
     }
 
@@ -64,7 +72,7 @@ public class SummaryWebService implements SummaryWebServiceContract {
     @ResponseBody
     @Override
     public SummaryStatusUI reloadSummary(String siteId) {
-        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(),  new Date(), "taskId");
+        return new SummaryStatusUI(SummaryStatusEnum.LOADING.name(), new Date(), "taskId");
     }
 
     private ReferringSourceReport referringSourceReportWithoutSources() {
@@ -117,6 +125,29 @@ public class SummaryWebService implements SummaryWebServiceContract {
 
     private int random() {
         return (int) (Math.random() * 1000) - 100;
+    }
+
+    private DirectSearchPhraseReportDto directSearchPhraseReportDto() {
+        return new DirectSearchPhraseReportDto(asList(
+                new DirectSearchPhraseCutDto("System goal", DSPCutType.SYSTEM,
+                        asList(
+                                new DirectSearchPhraseDto("test 1", 123, 233, 2343, 234, 23),
+                                new DirectSearchPhraseDto("test 2", 123, 233, 2343, 234, 23)
+                        ),
+                        asList(
+                                new DirectSearchPhraseDto("test 1", 123, 233, 2343, 234, 23),
+                                new DirectSearchPhraseDto("test 2", 123, 233, 2343, 234, 23)
+                        )),
+                new DirectSearchPhraseCutDto("Goal2", DSPCutType.GOAL,
+                        asList(
+                                new DirectSearchPhraseDto("test 1", 123, 233, 2343, 234, 11),
+                                new DirectSearchPhraseDto("test 2", 123, 233, 2343, 234, 11)
+                        ),
+                        asList(
+                                new DirectSearchPhraseDto("test 1", 123, 233, 2343, 234, 12),
+                                new DirectSearchPhraseDto("test 2", 123, 233, 2343, 234, 13)
+                        ))
+        ));
     }
 
     private VisitsDuringMonthReportDto visitsDuringMonthReportDto() {
